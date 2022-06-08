@@ -22,9 +22,10 @@ const Home = ({ searchValue }) => {
     //! провіряє чи в сортуванні є '-' і робить відповідні умови
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
+    const search = searchValue ? `&search=${searchValue}` : '';
 
     fetch(
-      `https://629facf58b939d3dc29d123b.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+      `https://629facf58b939d3dc29d123b.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((res) => res.json())
       .then((json) => {
@@ -32,16 +33,11 @@ const Home = ({ searchValue }) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [searchValue, categoryId, sortType]);
 
-  const pizzasData = pizzas
-    .filter((obj) => {
-      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true;
-      }
-      return false;
-    })
-    .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
+  const pizzasData = pizzas.map((pizza) => (
+    <PizzaBlock key={pizza.id} {...pizza} />
+  ));
 
   const skeletons = [...new Array(10)].map((_, index) => (
     <PizzaSkeleton key={index} />
