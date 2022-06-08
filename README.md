@@ -7,7 +7,7 @@
 - React Hooks 
 - Prettier 
 - CSS-Modules / SCSS 
-- React Content Loader 
+- React Content Loader (Skeleton)
 - React Pagination 
 - Lodash.Debounce
-- Code Splitting, React Loadable, useWhyDidYouUpdate
+- Mockapi
