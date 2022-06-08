@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-const Sort = () => {
+const Sort = ({ value, onChangeSort }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selected, setSelected] = useState(0);
 
-  const list = ['популярністю', 'ціною', 'алфавітом'];
-  const sortName = list[selected];
+  const sortRef = useRef();
+
+  const list = [
+    { name: 'популярністю (DESC)', sortProperty: 'rating' },
+    { name: 'популярністю (ASC)', sortProperty: '-rating' },
+    { name: 'ціною (DESC)', sortProperty: 'price' },
+    { name: 'ціною (ASC)', sortProperty: '-price' },
+    { name: 'алфавітом (DESC)', sortProperty: 'title' },
+    { name: 'алфавітом (ASC)', sortProperty: '-title' },
+  ];
 
   const onClickListItem = (index) => {
-    setSelected(index);
+    onChangeSort(index);
     setIsVisible(false);
   };
 
+  const handleOutsideClick = (event) => {
+    if (!event.path.includes(sortRef.current)) {
+      setIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleOutsideClick);
+  }, []);
+
   return (
-    <div className='sort'>
+    <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <svg
           className={isVisible ? 'rotated' : ''}
@@ -34,21 +51,23 @@ const Sort = () => {
             setIsVisible(!isVisible);
           }}
         >
-          {sortName}
+          {value.name}
         </span>
       </div>
       {isVisible && (
         <div className='sort__popup'>
           <ul>
-            {list.map((item, index) => (
+            {list.map((obj) => (
               <li
-                key={item}
+                key={obj.item}
                 onClick={() => {
-                  onClickListItem(index);
+                  onClickListItem(obj);
                 }}
-                className={selected === index ? 'active' : ''}
+                className={
+                  value.sortProperty === obj.sortProperty ? 'active' : ''
+                }
               >
-                {item}
+                {obj.name}
               </li>
             ))}
           </ul>

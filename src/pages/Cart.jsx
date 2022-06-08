@@ -387,7 +387,7 @@ const Cart = () => {
               Всього піц: <b>3 шт.</b>
             </span>
             <span>
-              Сумма замовлення: <b>900 ₴</b>
+              Сума замовлення: <b>900 ₴</b>
             </span>
           </div>
           <div className='cart__bottom-buttons'>
