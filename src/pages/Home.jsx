@@ -4,7 +4,7 @@ import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import Sort from '../components/Sort';
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,14 +13,13 @@ const Home = () => {
     name: 'популярністю',
     sortProperty: 'rating',
   });
-  console.log('sortType.sortProperty', sortType.sortProperty);
 
   useEffect(() => {
     setIsLoading(true);
 
-      //! з властивості видали '-' якщо він буде 
+    //! з властивості видали '-' якщо він буде
     const sortBy = sortType.sortProperty.replace('-', '');
-      //! провіряє чи в сортуванні є '-' і робить відповідні умови
+    //! провіряє чи в сортуванні є '-' і робить відповідні умови
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
 
@@ -35,6 +34,19 @@ const Home = () => {
     window.scrollTo(0, 0);
   }, [categoryId, sortType]);
 
+  const pizzasData = pizzas
+    .filter((obj) => {
+      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      return false;
+    })
+    .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
+
+  const skeletons = [...new Array(10)].map((_, index) => (
+    <PizzaSkeleton key={index} />
+  ));
+
   return (
     <div className='container'>
       <div className='content__top'>
@@ -42,11 +54,7 @@ const Home = () => {
         <Sort value={sortType} onChangeSort={setSortType} />
       </div>
       <h2 className='content__title'>Всі піци</h2>
-      <div className='content__items'>
-        {isLoading
-          ? [...new Array(10)].map((_, index) => <PizzaSkeleton key={index} />)
-          : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
-      </div>
+      <div className='content__items'>{isLoading ? skeletons : pizzasData}</div>
     </div>
   );
 };
