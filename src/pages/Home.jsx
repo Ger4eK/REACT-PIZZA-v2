@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { SearchContext } from '../App';
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination/Pagination';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import Sort from '../components/Sort';
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  const { searchValue } = useContext  (SearchContext);
+
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +57,7 @@ const Home = ({ searchValue }) => {
       </div>
       <h2 className='content__title'>Всі піци</h2>
       <div className='content__items'>{isLoading ? skeletons : pizzasData}</div>
-      <Pagination onChangePage={setCurrentPage}/>
+      <Pagination onChangePage={setCurrentPage} />
     </div>
   );
 };
