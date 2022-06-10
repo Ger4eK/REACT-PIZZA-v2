@@ -10,4 +10,5 @@
 - React Content Loader (Skeleton)
 - React Pagination 
 - Lodash.Debounce
+- QS
 - Mockapi
