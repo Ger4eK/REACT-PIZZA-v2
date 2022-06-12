@@ -37,7 +37,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   };
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
     // з властивості видали '-' якщо він буде
     const sortBy = sortType.sortProperty.replace('-', '');
@@ -45,14 +45,12 @@ const Home = () => {
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
-    axios
-      .get(
-        `https://629facf58b939d3dc29d123b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
+
+    const response = await axios.get(
+      `https://629facf58b939d3dc29d123b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+    );
+    setPizzas(response.data);
+    setIsLoading(false);
   };
 
   //TODO Якщо змінили параметри і був перший рендер то буде ця провірка
