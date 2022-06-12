@@ -22,14 +22,19 @@ const Sort = () => {
     setIsVisible(false);
   };
 
-  const handleOutsideClick = (event) => {
-    if (!event.path.includes(sortRef.current)) {
-      setIsVisible(false);
-    }
-  };
-
   useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setIsVisible(false);
+        console.log('click');
+      }
+    };
+
     document.body.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.body.removeEventListener('click', handleOutsideClick);
+    };
   }, []);
 
   return (
@@ -60,9 +65,9 @@ const Sort = () => {
       {isVisible && (
         <div className='sort__popup'>
           <ul>
-            {sortList.map((obj) => (
+            {sortList.map((obj, index) => (
               <li
-                key={obj.item}
+                key={index}
                 onClick={() => {
                   onClickListItem(obj);
                 }}

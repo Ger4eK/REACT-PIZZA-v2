@@ -39,9 +39,9 @@ const Home = () => {
 
   const fetchPizzas = () => {
     setIsLoading(true);
-    //! з властивості видали '-' якщо він буде
+    // з властивості видали '-' якщо він буде
     const sortBy = sortType.sortProperty.replace('-', '');
-    //! провіряє чи в сортуванні є '-' і робить відповідні умови
+    // провіряє чи в сортуванні є '-' і робить відповідні умови
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
@@ -57,28 +57,28 @@ const Home = () => {
 
   //TODO Якщо змінили параметри і був перший рендер то буде ця провірка
   useEffect(() => {
-    //! якшо isMounted буде true (коли вже був перший рендер), то тільки тоді роби парсинг всіх параметрів
+    // якшо isMounted буде true (коли вже був перший рендер), то тільки тоді роби парсинг всіх параметрів
     if (isMounted.current) {
-      //! тут з'єднюєм
+      // тут з'єднюєм
       const queryString = qs.stringify({
         sortProperty: sortType.sortProperty,
         categoryId,
         currentPage,
       });
-      //! вставляє queryString в наш URL
+      // вставляє queryString в наш URL
       navigate(`?${queryString}`);
     }
-    //! робиться для того шоб після першого рендера умова if (isMounted.current) спрацьовувала
+    // робиться для того шоб після першого рендера умова if (isMounted.current) спрацьовувала
     isMounted.current = true;
   }, [categoryId, sortType, currentPage, navigate]);
 
   //TODO Якшо був перший рендер, то ми провіряємо URL-параметри і зберігаєм в редаксі
   useEffect(() => {
-    //! Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
+    // Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
 
-      //! Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
+      // Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
       const sort = sortList.find(
         (obj) => obj.sortProperty === params.sortProperty
       );
@@ -89,9 +89,9 @@ const Home = () => {
 
   //TODO якщо був перший рендер, то робимо запит піци
   useEffect(() => {
-    //! Тут нам треба провіряти чи треба нам робити запит (тобто якшо прийшли параметри з (window.location.search) то тоді ми не будем відправляти стандартний запит, а чекаємо коли виконається dispatch(setFilters))
+    // Тут нам треба провіряти чи треба нам робити запит (тобто якшо прийшли параметри з (window.location.search) то тоді ми не будем відправляти стандартний запит, а чекаємо коли виконається dispatch(setFilters))
 
-    //! Тут якраз робитсья перевірка чи прийшли параметри, якшо нє то ми робимо стандартний запит
+    // Тут якраз робитсья перевірка чи прийшли параметри, якшо нє то ми робимо стандартний запит
     if (!isSearch.current) {
       fetchPizzas();
     }
