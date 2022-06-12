@@ -46,11 +46,17 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    const response = await axios.get(
-      `https://629facf58b939d3dc29d123b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    );
-    setPizzas(response.data);
-    setIsLoading(false);
+    try {
+      const response = await axios.get(
+        `https://629facf58b939d3dc29d123b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      );
+      setPizzas(response.data);
+    } catch (error) {
+      console.log('ERROR', error);
+      alert('Помилка при отриманні піц 💀');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //TODO Якщо змінили параметри і був перший рендер то буде ця провірка
