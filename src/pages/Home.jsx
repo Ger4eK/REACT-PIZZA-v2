@@ -14,20 +14,20 @@ import {
   setCurrentPage,
   setFilters,
 } from '../redux/slices/filterSlice';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortType = useSelector((state) => state.filter.sortType);
-  const currentPage = useSelector((state) => state.filter.currentPage);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { items, status } = useSelector((state) => state.pizza);
+  const { categoryId, sortType, currentPage } = useSelector(
+    (state) => state.filter
+  );
+
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
   const { searchValue } = useContext(SearchContext);
-
-  const [pizzas, setPizzas] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeCategory = React.useCallback((idx) => {
     dispatch(setCategoryId(idx));
@@ -37,8 +37,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   };
 
-  const fetchPizzas = async () => {
-    setIsLoading(true);
+  const getPizzas = async () => {
     // з властивості видали '-' якщо він буде
     const sortBy = sortType.sortProperty.replace('-', '');
     // провіряє чи в сортуванні є '-' і робить відповідні умови
@@ -46,17 +45,15 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    try {
-      const response = await axios.get(
-        `https://629facf58b939d3dc29d123b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      );
-      setPizzas(response.data);
-    } catch (error) {
-      console.log('ERROR', error);
-      alert('Помилка при отриманні піц 💀');
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(
+      fetchPizzas({
+        sortBy,
+        order,
+        category,
+        search,
+        currentPage,
+      })
+    );
   };
 
   //TODO Якщо змінили параметри і був перший рендер то буде ця провірка
@@ -81,7 +78,6 @@ const Home = () => {
     // Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-
       // Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
       const sort = sortList.find(
         (obj) => obj.sortProperty === params.sortProperty
@@ -97,13 +93,13 @@ const Home = () => {
 
     // Тут якраз робитсья перевірка чи прийшли параметри, якшо нє то ми робимо стандартний запит
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
     isSearch.current = false;
     window.scrollTo(0, 0);
   }, [searchValue, categoryId, sortType, currentPage]);
 
-  const pizzasData = pizzas.map((pizza) => (
+  const pizzasData = items.map((pizza) => (
     <PizzaBlock key={pizza.id} {...pizza} />
   ));
 
@@ -117,7 +113,20 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className='content__title'>Всі піци</h2>
-      <div className='content__items'>{isLoading ? skeletons : pizzasData}</div>
+      {status === 'error' ? (
+        <div className='content__error-info'>
+          <h2>Упс, сталася помилка 💀...💀</h2>
+          <p>
+            Нажаль піци не захотіли вам показуватись. Попробуйте перезавантажити
+            ↻ сторінку)
+          </p>
+        </div>
+      ) : (
+        <div className='content__items'>
+          {status === 'loading' ? skeletons : pizzasData}
+        </div>
+      )}
+
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
