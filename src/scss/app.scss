@@ -109,6 +109,19 @@ body {
   width: $container-width;
   margin: 0 auto;
 
+&__full-pizza {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  h2 {
+    margin-bottom: 40px;
+    font-size: 36px;
+  }
+  a {
+    width: 240px;
+  }
+}
+
   &--cart {
     max-width: 820px;
     margin: 90px auto;

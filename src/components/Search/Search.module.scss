@@ -1,6 +1,14 @@
 .root {
    position: relative;
    left: -120px;
+   transition-duration: .35s;
+   transition-property: transform;
+   -webkit-tap-highlight-color: rgba(0,0,0,0);
+   transform: translateZ(0);
+   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+   &:hover {
+      transform: scale(0.95);
+   }
 }
 
 .input {

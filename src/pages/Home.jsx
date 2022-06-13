@@ -1,9 +1,7 @@
-import axios from 'axios';
 import qs from 'qs';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { SearchContext } from '../App';
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination/Pagination';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
@@ -115,8 +113,8 @@ const Home = () => {
         <div className='content__error-info'>
           <h2>Упс, сталася помилка 💀...💀</h2>
           <p>
-            На жаль піци не захотіли вам показуватись. Попробуйте перезавантажити
-            ↻ сторінку)
+            На жаль піци не захотіли вам показуватись. Попробуйте
+            перезавантажити ↻ сторінку)
           </p>
         </div>
       ) : (
