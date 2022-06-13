@@ -20,14 +20,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sortType, currentPage } = useSelector(
+  const { categoryId, sortType, currentPage, searchValue } = useSelector(
     (state) => state.filter
   );
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
-
-  const { searchValue } = useContext(SearchContext);
 
   const onChangeCategory = React.useCallback((idx) => {
     dispatch(setCategoryId(idx));
@@ -117,7 +115,7 @@ const Home = () => {
         <div className='content__error-info'>
           <h2>Упс, сталася помилка 💀...💀</h2>
           <p>
-            Нажаль піци не захотіли вам показуватись. Попробуйте перезавантажити
+            На жаль піци не захотіли вам показуватись. Попробуйте перезавантажити
             ↻ сторінку)
           </p>
         </div>

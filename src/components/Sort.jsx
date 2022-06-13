@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSortType } from '../redux/slices/filterSlice';
+import { selectSort, setSortType } from '../redux/slices/filterSlice';
 
 export const sortList = [
   { name: 'популярністю (DESC)', sortProperty: 'rating' },
@@ -12,7 +12,7 @@ export const sortList = [
 ];
 const Sort = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const sortType = useSelector((state) => state.filter.sortType);
+  const sortType = useSelector(selectSort);
   const dispatch = useDispatch();
 
   const sortRef = useRef();
