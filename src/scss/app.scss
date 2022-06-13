@@ -16,7 +16,7 @@ body {
   border-radius: 10px;
   max-width: 1400px;
 
-  @media (max-width: 410px) {
+  @media (max-width: 520px) {
     width: calc(115vw - 100px);
     margin: 20px auto;
   }
@@ -27,8 +27,9 @@ body {
   padding: 40px 0;
 
   &__error-info {
+    display: flex;
+    flex-direction: column;
     margin: 100px auto;
-    width: 520px;
     text-align: center;
 
     h2 {
@@ -108,8 +109,9 @@ body {
 .container {
   width: $container-width;
   margin: 0 auto;
-
+  
 &__full-pizza {
+  height: 700px;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -119,6 +121,26 @@ body {
   }
   a {
     width: 240px;
+  }
+
+  @media (max-width: 800px) {
+    img {
+      width: 500px;
+      height: 500px;
+    }
+  }
+  @media (max-width: 625px) {
+    img {
+      width: 400px;
+      height: 400px;
+    }
+  }
+  @media (max-width: 435px) {
+    height: 500px;
+    img {
+      width: 300px;
+      height: 300px;
+    }
   }
 }
 
@@ -360,9 +382,12 @@ body {
   }
 
   &--empty {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
     margin: 60px auto;
-    width: 600px;
     text-align: center;
+
 
     h2 {
       font-size: 36px;
