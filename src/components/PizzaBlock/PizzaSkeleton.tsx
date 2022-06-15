@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import ContentLoader from 'react-content-loader';
 
-const PizzaSkeleton = (props) => (
+const PizzaSkeleton: FC = (props) => (
   <div className='pizza-block-wrapper'>
     <ContentLoader
       className='pizza-block'

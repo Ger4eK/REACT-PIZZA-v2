@@ -1,4 +1,5 @@
 import React from 'react';
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -6,11 +7,12 @@ import logo from '../assets/img/pizza-logo.svg';
 import { selectCart } from '../redux/slices/cartSlice';
 import Search from './Search/Search';
 
-const Header = () => {
+const Header: FC = () => {
   const { items, totalPrice } = useSelector(selectCart);
   const location = useLocation();
 
-  const totalItemsCount = items.reduce((sum, item) => {
+  //! тимчасово
+  const totalItemsCount = items.reduce((sum: number, item: any) => {
     return item.count + sum;
   }, 0);
 

@@ -1,5 +1,12 @@
+import { FC } from 'react';
 
-const Categories = ({ value, onChangeCategory }) => {
+type CategoriesProps = {
+  value: number;
+  //! тимчасово
+  onChangeCategory: any
+}
+
+const Categories: FC<CategoriesProps> = ({ value, onChangeCategory }) => {
 
   const categories = [
     'Всі',
@@ -16,7 +23,7 @@ const Categories = ({ value, onChangeCategory }) => {
         {categories.map((categoryName, index) => {
           return (
             <li
-              key={categoryName}
+                   key={categoryName}
               onClick={() => {
                 onChangeCategory(index);
               }}
