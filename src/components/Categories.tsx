@@ -2,8 +2,7 @@ import { FC } from 'react';
 
 type CategoriesProps = {
   value: number;
-  //! тимчасово
-  onChangeCategory: any
+  onChangeCategory: (idx: number) => void
 }
 
 const Categories: FC<CategoriesProps> = ({ value, onChangeCategory }) => {

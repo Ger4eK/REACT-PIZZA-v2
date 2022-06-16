@@ -1,13 +1,15 @@
-import  { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 
+type PizzaState = {
+  imageUrl: string;
+  title: string;
+  price: number;
+};
+
 const FullPizza: FC = () => {
-  const [pizza, setPizza] = useState<{
-    imageUrl: string,
-    title: string,
-    price: number
-  }>();
+  const [pizza, setPizza] = useState<PizzaState>();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -18,8 +20,6 @@ const FullPizza: FC = () => {
           'https://629facf58b939d3dc29d123b.mockapi.io/items/' + id
         );
         setPizza(data);
-        
-        
       } catch (error) {
         alert('Помилка при отриманні піци!');
         navigate('/');
@@ -31,9 +31,9 @@ const FullPizza: FC = () => {
   if (!pizza) {
     return (
       <div className='container__full-pizza'>
-      <h3>Завантаження...</h3>
-    </div>
-    )
+        <h3>Завантаження...</h3>
+      </div>
+    );
   }
   console.log(pizza);
   return (

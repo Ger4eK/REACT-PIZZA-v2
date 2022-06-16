@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectSort, setSortType } from '../redux/slices/filterSlice';
 
 type SortItem = {
-  name: string; 
+  name: string;
   sortProperty: string;
-}
+};
+
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
 
 export const sortList: SortItem[] = [
   { name: 'популярністю (DESC)', sortProperty: 'rating' },
@@ -30,9 +34,10 @@ const Sort: FC = () => {
   };
 
   useEffect(() => {
-    //! тимчасово
-    const handleOutsideClick = (event: any) => {
-      if (!event.path.includes(sortRef.current)) {
+    //! ми модифікуєм event для того, щоб додати тип для path, бо простий event його немає. As використовуєтсья для того шоб перевизначити тип
+    const handleOutsideClick = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setIsVisible(false);
       }
     };
