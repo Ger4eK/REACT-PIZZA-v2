@@ -104,7 +104,6 @@ const Home: FC = () => {
     window.scrollTo(0, 0);
   }, [searchValue, categoryId, sortType, currentPage]);
 
-  //! тимчасово
   const pizzasData = items.map((pizza) => (
     <PizzaBlock key={pizza.id} {...pizza} />
   ));

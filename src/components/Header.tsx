@@ -11,8 +11,7 @@ const Header: FC = () => {
   const { items, totalPrice } = useSelector(selectCart);
   const location = useLocation();
 
-  //! тимчасово
-  const totalItemsCount = items.reduce((sum: number, item: any) => {
+  const totalItemsCount = items.reduce((sum: number, item) => {
     return item.count + sum;
   }, 0);
 
@@ -28,7 +27,7 @@ const Header: FC = () => {
             </div>
           </div>
         </Link>
-        <Search />
+        {location.pathname !== '/cart' && <Search />}gi
         <div className='header__cart'>
           {location.pathname !== '/cart' && (
             <Link to='/cart' className='button button--cart'>
