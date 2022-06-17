@@ -1,11 +1,13 @@
-import { FC } from 'react';
+import { useWhyDidYouUpdate } from 'ahooks';
+import { FC, memo } from 'react';
 
 type CategoriesProps = {
   value: number;
-  onChangeCategory: (idx: number) => void
-}
+  onChangeCategory: (idx: number) => void;
+};
 
-const Categories: FC<CategoriesProps> = ({ value, onChangeCategory }) => {
+const Categories: FC<CategoriesProps> = memo(({ value, onChangeCategory }) => {
+  //useWhyDidYouUpdate('Categories', { value, onChangeCategory });
 
   const categories = [
     'Всі',
@@ -22,7 +24,7 @@ const Categories: FC<CategoriesProps> = ({ value, onChangeCategory }) => {
         {categories.map((categoryName, index) => {
           return (
             <li
-                   key={categoryName}
+              key={categoryName}
               onClick={() => {
                 onChangeCategory(index);
               }}
@@ -35,6 +37,6 @@ const Categories: FC<CategoriesProps> = ({ value, onChangeCategory }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;

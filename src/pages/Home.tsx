@@ -116,7 +116,7 @@ const Home: FC = () => {
     <div className='container'>
       <div className='content__top'>
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort value={sortType} />
       </div>
       <h2 className='content__title'>Всі піци</h2>
       {status === 'error' ? (

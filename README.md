@@ -12,4 +12,4 @@
 - Lodash.Debounce
 - QS
 - Mockapi
-- CLSX
+- CLSX, useWhyDidYouUpdate

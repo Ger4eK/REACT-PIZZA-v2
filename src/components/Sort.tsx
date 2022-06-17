@@ -1,7 +1,12 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSort, setSortType, SortPropertyEnum } from '../redux/slices/filterSlice';
+import {
+  selectSort,
+  setSortType,
+  SortPropertyEnum,
+  SortType,
+} from '../redux/slices/filterSlice';
 
 export type SortItem = {
   name: string;
@@ -21,9 +26,12 @@ export const sortList: SortItem[] = [
   { name: 'алфавітом (ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-const Sort: FC = () => {
+type SortProps = {
+  value: SortType;
+};
+
+const Sort: FC<SortProps> = memo(({ value }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const sortType = useSelector(selectSort);
   const dispatch = useDispatch();
 
   const sortRef = useRef<HTMLDivElement>(null);
@@ -71,7 +79,7 @@ const Sort: FC = () => {
             setIsVisible(!isVisible);
           }}
         >
-          {sortType.name}
+          {value.name}
         </span>
       </div>
       {isVisible && (
@@ -84,7 +92,7 @@ const Sort: FC = () => {
                   onClickListItem(obj);
                 }}
                 className={
-                  sortType.sortProperty === obj.sortProperty ? 'active' : ''
+                  value.sortProperty === obj.sortProperty ? 'active' : ''
                 }
               >
                 {obj.name}
@@ -95,6 +103,6 @@ const Sort: FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;
