@@ -1,5 +1,5 @@
 import qs from 'qs';
-import React, { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Categories from '../components/Categories';
@@ -18,7 +18,7 @@ import { RootState, useAppDispatch } from '../redux/store';
 const Home: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { items, status } = useSelector((state: any) => state.pizza);
+  const { items, status } = useSelector((state: RootState) => state.pizza);
   const { categoryId, sortType, currentPage, searchValue } = useSelector(
     (state: RootState) => state.filter
   );
@@ -26,7 +26,7 @@ const Home: FC = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const onChangeCategory = React.useCallback((idx: number) => {
+  const onChangeCategory = useCallback((idx: number) => {
     dispatch(setCategoryId(idx));
   }, []);
 
@@ -41,8 +41,6 @@ const Home: FC = () => {
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
-
-
     dispatch(
       fetchPizzas({
         sortBy,
@@ -53,47 +51,46 @@ const Home: FC = () => {
       })
     );
   };
+  ////TODO Якщо змінили параметри і був перший рендер то буде ця провірка
+  //useEffect(() => {
+  //  // якшо isMounted буде true (коли вже був перший рендер), то тільки тоді роби парсинг всіх параметрів
+  //  if (isMounted.current) {
+  //    // тут з'єднюєм
+  //    const queryString = qs.stringify({
+  //      sortProperty: sortType.sortProperty,
+  //      categoryId,
+  //      currentPage,
+  //    });
+  //    // вставляє queryString в наш URL
+  //    navigate(`?${queryString}`);
+  //  }
+  //  // робиться для того шоб після першого рендера умова if (isMounted.current) спрацьовувала
+  //  isMounted.current = true;
+  //}, [categoryId, sortType, currentPage, navigate]);
 
-  //TODO Якщо змінили параметри і був перший рендер то буде ця провірка
-  useEffect(() => {
-    // якшо isMounted буде true (коли вже був перший рендер), то тільки тоді роби парсинг всіх параметрів
-    if (isMounted.current) {
-      // тут з'єднюєм
-      const queryString = qs.stringify({
-        sortProperty: sortType.sortProperty,
-        categoryId,
-        currentPage,
-      });
-      // вставляє queryString в наш URL
-      navigate(`?${queryString}`);
-    }
-    // робиться для того шоб після першого рендера умова if (isMounted.current) спрацьовувала
-    isMounted.current = true;
-  }, [categoryId, sortType, currentPage, navigate]);
+  ////TODO Якшо був перший рендер, то ми провіряємо URL-параметри і зберігаєм в редаксі
+  //useEffect(() => {
+  //  // Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
+  //  if (window.location.search) {
+  //    const params = qs.parse(
+  //      window.location.search.substring(1)
+  //    ) as unknown as searchPizzaParams;
+  //    // Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
+  //    const sortType = sortList.find(
+  //      (obj) => obj.sortProperty === params.sortBy
+  //    );
 
-  //TODO Якшо був перший рендер, то ми провіряємо URL-параметри і зберігаєм в редаксі
-  useEffect(() => {
-    // Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
-    if (window.location.search) {
-      const params = qs.parse(
-        window.location.search.substring(1)
-      ) as unknown as searchPizzaParams;
-      // Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
-      const sortType = sortList.find(
-        (obj) => obj.sortProperty === params.sortBy
-      );
-
-      dispatch(
-        setFilters({
-          searchValue: params.search,
-          categoryId: Number(params.category),
-          currentPage: Number(params.currentPage),
-          sortType: sortType ? sortType : sortList[0],
-        })
-      );
-      isSearch.current = true;
-    }
-  }, []);
+  //    dispatch(
+  //      setFilters({
+  //        searchValue: params.search,
+  //        categoryId: Number(params.category),
+  //        currentPage: Number(params.currentPage),
+  //        sortType: sortType ? sortType : sortList[0],
+  //      })
+  //    );
+  //    isSearch.current = true;
+  //  }
+  //}, []);
 
   //TODO якщо був перший рендер, то робимо запит піци
   useEffect(() => {
@@ -108,7 +105,7 @@ const Home: FC = () => {
   }, [searchValue, categoryId, sortType, currentPage]);
 
   //! тимчасово
-  const pizzasData = items.map((pizza: any) => (
+  const pizzasData = items.map((pizza) => (
     <PizzaBlock key={pizza.id} {...pizza} />
   ));
 

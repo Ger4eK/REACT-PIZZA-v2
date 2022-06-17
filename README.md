@@ -12,3 +12,4 @@
 - Lodash.Debounce
 - QS
 - Mockapi
+- CLSX
