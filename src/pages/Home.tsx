@@ -1,6 +1,6 @@
 import qs from 'qs';
 import React, { FC, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination/Pagination';
@@ -12,14 +12,15 @@ import {
   setCurrentPage,
   setFilters,
 } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { fetchPizzas, searchPizzaParams } from '../redux/slices/pizzaSlice';
+import { RootState, useAppDispatch } from '../redux/store';
 
 const Home: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { items, status } = useSelector((state: any) => state.pizza);
   const { categoryId, sortType, currentPage, searchValue } = useSelector(
-    (state: any) => state.filter
+    (state: RootState) => state.filter
   );
 
   const isSearch = useRef(false);
@@ -41,14 +42,14 @@ const Home: FC = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
+
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
         category,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       })
     );
   };
@@ -74,12 +75,22 @@ const Home: FC = () => {
   useEffect(() => {
     // Якшо є параметри то ми їх парсимо (і вони будуть зберігатись для наступних таких перевірок)
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
+      const params = qs.parse(
+        window.location.search.substring(1)
+      ) as unknown as searchPizzaParams;
       // Так як в наших params сорт в нас стрінга, а в редаксі в наc об'єкт, нам потрібно пробігтись по  масиву об'єктів (sortList) і найти саме той об'єкт в якого sortProperty відповідає sortProperty в стрінзі в params і вже той об'єкт ми будем передавати в редакс
-      const sort = sortList.find(
-        (obj) => obj.sortProperty === params.sortProperty
+      const sortType = sortList.find(
+        (obj) => obj.sortProperty === params.sortBy
       );
-      dispatch(setFilters({ ...params, sort }));
+
+      dispatch(
+        setFilters({
+          searchValue: params.search,
+          categoryId: Number(params.category),
+          currentPage: Number(params.currentPage),
+          sortType: sortType ? sortType : sortList[0],
+        })
+      );
       isSearch.current = true;
     }
   }, []);
