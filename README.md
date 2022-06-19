@@ -11,5 +11,5 @@
 - React Pagination 
 - Lodash.Debounce
 - QS
-- Mockapi
+- Mockapi, localStorage
 - CLSX, useWhyDidYouUpdate
