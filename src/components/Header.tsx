@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useRef } from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -10,10 +10,20 @@ import Search from './Search/Search';
 const Header: FC = () => {
   const { items, totalPrice } = useSelector(selectCart);
   const location = useLocation();
+  //! використовується для того щоб при першому рендері нічого в локал сторедж не зберігалось
+  const isMounted = useRef(false);
 
-  const totalItemsCount = items.reduce((sum: number, item) => {
+  const totalItemsCount = items?.reduce((sum: number, item) => {
     return item.count + sum;
   }, 0);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items);
+      localStorage.setItem('cart', json);
+    }
+    isMounted.current = true;
+  }, [items]);
 
   return (
     <div className='header'>
@@ -27,7 +37,7 @@ const Header: FC = () => {
             </div>
           </div>
         </Link>
-        {location.pathname !== '/cart' && <Search />}gi
+        {location.pathname !== '/cart' && <Search />}
         <div className='header__cart'>
           {location.pathname !== '/cart' && (
             <Link to='/cart' className='button button--cart'>

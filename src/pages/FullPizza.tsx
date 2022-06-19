@@ -35,7 +35,6 @@ const FullPizza: FC = () => {
       </div>
     );
   }
-  console.log(pizza);
   return (
     <div className='container__full-pizza'>
       <div>
