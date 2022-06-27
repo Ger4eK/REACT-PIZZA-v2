@@ -1,10 +1,3 @@
-//import { RootState } from './../store';
-//import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-//import { getCartFromLocalStorage } from '../../utils/getCartFromLocalStorage';
-//import { calcTotalPrice } from '../../utils/calcTotalPrice';
-//import { CartItem, CartSliceState } from './cart/types';
-
-import { RootState } from '../../store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCartFromLocalStorage } from '../../../utils/getCartFromLocalStorage';
 import { calcTotalPrice } from '../../../utils/calcTotalPrice';
