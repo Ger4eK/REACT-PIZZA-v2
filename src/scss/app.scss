@@ -239,7 +239,7 @@ body {
       display: flex;
       align-items: center;
       margin-right: 15px;
-      //width: 10%;
+      width: 10%;
 
       img {
         width: 80px;
@@ -251,7 +251,8 @@ body {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      //width: 40%;
+      align-items: center;
+      width: 40%;
 
       h3 {
         font-weight: bold;
@@ -270,7 +271,7 @@ body {
       display: flex;
       align-items: center;
       //justify-content: space-between;
-      //width: 13%;
+      width: 13%;
       gap: 3px;
 
       &-minus {
@@ -310,7 +311,7 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      //width: 33%;
+      width: 33%;
 
       b {
         font-weight: bold;
@@ -323,7 +324,7 @@ body {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      //width: 4%;
+      width: 4%;
 
       .button {
         border-color: darken($color: $gray-line, $amount: 10);
@@ -351,8 +352,17 @@ body {
       }
     }
     @media (max-width: 700px) {
+      &-img {
+          width: 100%;
+          justify-content: center;
+      }
+
       &-price b {
         font-size: 18px;
+      }
+      &-count {
+        width: 100%;
+        justify-content: center;
       }
       &-count b {
         font-size: 18px;
@@ -360,10 +370,9 @@ body {
       h3 {
         font-size: 18px;
       }
-      //flex-direction:column;
-      //justify-content: center;
-      //align-items: center;
-      //gap: 10px;
+      &-info {
+        width: 100%;
+      }
   }
     @media (max-width: 650px) {
      
@@ -384,7 +393,7 @@ body {
 
       span {
         font-size: 22px;
-
+        text-align: center;
         &:last-of-type {
           b {
             color: $orange;
@@ -408,6 +417,7 @@ body {
         align-items: center;
         justify-content: center;
         width: 210px;
+        padding: 16px 20px;
 
         border-color: darken($color: $gray-line, $amount: 10);
 
