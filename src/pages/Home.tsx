@@ -23,6 +23,8 @@ const Home: FC = () => {
     (state: RootState) => state.filter
   );
 
+  
+
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 

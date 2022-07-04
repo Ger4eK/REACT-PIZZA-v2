@@ -75,4 +75,12 @@
     line-height: 27px;
     letter-spacing: 0.015em;
   }
+
+  @media (max-width: 380px) {
+    width: 240px;
+
+    &__image {
+      width: 250px;
+    }
+   }
 }

@@ -20,6 +20,9 @@
         background-color: #fe5f1e;
         color: #fff;
       }
+      @media (max-width: 450px) {
+        margin-right: 5px;
+     }
     }
   }
   //! коли бібліотека використовує свої класи то ми можемо до них звернутись через селектор :global
@@ -31,4 +34,6 @@
         }
       }
     }
+
+   
 }
